@@ -3,280 +3,510 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第1回 合同デジタル担当者会議 議事録 - Alumni Association Digital Report</title>
+    <title>Geminiで楽しむ！やさしい生成AI講座 インタラクティブガイド</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Noto Sans JP"', 'sans-serif'],
-                        serif: ['"Noto Serif JP"', 'serif'],
-                    },
-                    colors: {
-                        ink: {
-                            DEFAULT: '#334155', /* slate-700 */
-                            light: '#64748b',   /* slate-500 */
-                            dark: '#0f172a'     /* slate-900 */
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* ベースのスタイリング */
         body {
-            background-color: #f8fafc; /* slate-50 */
+            background-color: #FAF8F5; /* 温かみのあるオフホワイト */
+            color: #333333; /* コントラストが高く読みやすい濃いグレー */
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
         }
-        /* カスタムリストの装飾 */
-        ul.custom-list {
-            list-style-type: none;
-            padding-left: 0.5rem;
-        }
-        ul.custom-list > li {
+
+        /* チャートコンテナの必須スタイリング */
+        .chart-container {
             position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.875rem;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
         }
-        ul.custom-list > li::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0.6rem;
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 50%;
-            background-color: #6366f1; /* indigo-500 */
-            opacity: 0.8;
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
         }
-        /* サブリストの装飾 */
-        ul.sub-list > li::before {
-            background-color: #cbd5e1; /* slate-300 */
+
+        /* アコーディオンのトランジション設定 */
+        .accordion-content {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, padding 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .accordion-content.open {
+            max-height: 1500px; /* 内容が収まる十分な高さ */
+            opacity: 1;
+        }
+
+        /* コピーボタンのホバー・アクティブ効果 */
+        .copy-btn {
+            transition: all 0.2s;
+        }
+        .copy-btn:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
-<body class="font-sans text-ink leading-relaxed py-6 md:py-10 px-4 sm:px-6 lg:px-8">
+<body class="antialiased">
 
-    <div class="max-w-4xl mx-auto space-y-8">
-        
-        <!-- ジャーナルヘッダー (薄く落ち着いた配色に) -->
-        <header class="relative bg-gradient-to-br from-slate-100 to-indigo-50 border border-slate-200 text-slate-800 rounded-2xl shadow-sm p-8 md:p-12 overflow-hidden">
-            <!-- 装飾的な背景円 (控えめに) -->
-            <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-indigo-100 opacity-40 rounded-full blur-2xl"></div>
-            <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-32 h-32 bg-blue-100 opacity-40 rounded-full blur-xl"></div>
-            
-            <div class="relative z-10 text-center">
-                <p class="text-xs md:text-sm font-semibold tracking-widest text-indigo-600 uppercase mb-4 font-serif">
-                    Alumni Association Digital Transformation Report
-                </p>
-                <h1 class="text-2xl md:text-4xl font-bold mb-6 leading-tight font-serif tracking-wide text-slate-900">
-                    第1回 合同デジタル担当者会議 議事録
-                </h1>
-                <div class="inline-flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm font-medium bg-white/60 backdrop-blur-sm px-6 py-2 rounded-full border border-slate-200">
-                    <span class="flex items-center gap-2 text-slate-600">
-                        <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        2026年2月28日
-                    </span>
-                    <span class="hidden md:inline text-slate-300">|</span>
-                    <span class="flex items-center gap-2 text-slate-600">
-                        <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        宮本公民館
-                    </span>
-                </div>
+<!-- Chosen Palette: Warm Neutrals & Earth Tones (Background: #FAF8F5, Text: #333333, Accents: Soft Blue, Green, Orange, Pink, Purple for categories) -->
+<!-- Application Structure Plan: 
+  This SPA is structured as an "Interactive Course Guide & Prompt Explorer". 
+  1. Header/Intro: Sets the welcoming tone and summarizes the course goals.
+  2. Overview Dashboard: Uses a Donut chart to visually break down the course balance (e.g., Daily Life, Hobbies, Basics), helping users understand the holistic approach of the curriculum.
+  3. Interactive Curriculum List: The core feature. It uses an accordion layout to hide complex details initially, preventing information overload for seniors. 
+  4. Prompt Actions: Inside each accordion, the "Prompt Examples" are presented as distinct cards with "Copy" buttons. This bridges the gap between reading the curriculum and actually using the AI, making the learning active.
+  This structure was chosen to make a dense 10-week curriculum feel approachable, structured, and immediately actionable.
+-->
+<!-- Visualization & Content Choices: 
+  - Course Balance Chart (Chart.js Donut): Goal is to 'Inform' about the curriculum mix. Chosen because a pie/donut chart intuitively shows parts of a whole, reassuring users that the course covers a variety of enjoyable topics, not just technical jargon.
+  - Accordion Layout (HTML/CSS/JS): Goal is to 'Organize'. Chosen to keep the main view clean while allowing drill-down into specific weeks. 
+  - Actionable Prompt Cards (HTML/JS): Goal is to 'Engage'. By making prompts copyable (using document.execCommand), users can instantly try them in a separate Gemini window without typing, which is a major hurdle for some seniors.
+  - NO SVG graphics used. NO Mermaid JS used.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+<div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    
+    <!-- ヘッダーセクション -->
+    <header class="text-center mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 border-b-4 border-orange-300 inline-block pb-2">
+            Geminiで楽しむ！やさしい生成AI講座
+        </h1>
+        <p class="text-lg text-gray-600 mt-2">全10回のカリキュラム・インタラクティブガイド</p>
+    </header>
+
+    <!-- 講座のねらいセクション -->
+    <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-10">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+            <span class="text-3xl mr-2">🎯</span> 講座のねらい
+        </h2>
+        <p class="mb-4 text-gray-700 leading-relaxed">
+            このガイドは、シニア層が生成AIへの恐怖心を取り除き、日常生活を豊かにするツールとして楽しく安全に活用するためのカリキュラムをまとめたものです。
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+            <div class="bg-orange-50 rounded-xl p-4 border border-orange-100">
+                <div class="text-2xl mb-2">🔰</div>
+                <h3 class="font-bold text-orange-800 mb-1">日常直結</h3>
+                <p class="text-sm text-gray-700">専門用語を避け、趣味や料理、旅行など身近な話題から学びます。</p>
             </div>
-        </header>
-
-        <!-- 要約 (Abstract) -->
-        <section class="bg-gradient-to-r from-teal-50 to-emerald-50 border-l-4 border-teal-500 rounded-r-2xl p-6 md:p-8 shadow-sm relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-teal-100 rounded-bl-full opacity-50 -z-0"></div>
-            <div class="relative z-10">
-                <h2 class="text-lg font-bold mb-4 font-serif text-teal-800 tracking-wide flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Abstract (要旨)
-                </h2>
-                <p class="text-sm md:text-base leading-loose mb-4 text-teal-900/80">
-                    本会議は、同窓会という組織の存在意義を「地域への開放」という文脈で再定義する重要な転換点となった。長沢新会長の方針に基づき、従来の閉鎖的な運営から脱却し、地域貢献と内部活性化を目指す方針が確認された。また、その運営を基盤から支えるためのデジタル化（DX）戦略について討議された。
-                </p>
-                <div class="bg-white/60 rounded-xl p-5 border border-teal-100/50">
-                    <p class="text-sm md:text-base font-bold mb-3 text-teal-900">主な決定事項と今後の方向性：</p>
-                    <ul class="custom-list text-sm md:text-base leading-relaxed text-teal-900/80">
-                        <li>規約の柔軟化による会員資格の拡大（他学部、家族、友人の受け入れ）と参加ハードルの低下。</li>
-                        <li>義務的な活動を廃止し、自発的な「プロジェクト・実行委員会形式」による参加型運営への移行。</li>
-                        <li>会長直轄の「デジタル推進組織」の独立・新設と、スキル人材のスカウト。</li>
-                        <li>LINE WORKSによる連絡網構築と、Googleドライブ移行による「脱USB宣言」の推進。</li>
-                        <li>ホームページのハブ化、およびAI活用による業務効率化・会員支援の実施。</li>
-                    </ul>
-                </div>
+            <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                <div class="text-2xl mb-2">📱</div>
+                <h3 class="font-bold text-blue-800 mb-1">スマホ・音声対応</h3>
+                <p class="text-sm text-gray-700">自分のペースで進め、文字入力が苦手でも音声入力で手軽に使えます。</p>
             </div>
-        </section>
-
-        <!-- 1. 新執行部の方針 (カード型) -->
-        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 md:p-8 hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                <span class="flex-shrink-0 w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg font-serif">1</span>
-                <h2 class="text-xl md:text-2xl font-bold font-serif text-ink-dark">
-                    新執行部の方針：「開かれた同窓会」への転換
-                </h2>
+            <div class="bg-green-50 rounded-xl p-4 border border-green-100">
+                <div class="text-2xl mb-2">🛡️</div>
+                <h3 class="font-bold text-green-800 mb-1">安全第一</h3>
+                <p class="text-sm text-gray-700">情報の正確性や個人情報の扱いなど、AIを使う上での注意点もしっかり学びます。</p>
             </div>
-            
-            <p class="mb-6 leading-relaxed text-ink-light font-medium bg-slate-50 p-4 rounded-lg">
-                長沢新会長の方針に基づき、従来の閉鎖的な運営から地域に開かれた組織への変革を目指す。
-            </p>
-
-            <div class="space-y-8 pl-2 md:pl-4">
-                <div class="relative border-l-2 border-indigo-200 pl-5">
-                    <h3 class="text-lg font-bold mb-3 text-indigo-900">1.1. 基本コンセプトと定義</h3>
-                    <ul class="custom-list">
-                        <li><strong class="text-indigo-700">地域貢献と内部活性化:</strong> 単なる会員数拡大を目的とせず、地域への貢献を通じて組織全体を活性化させる。</li>
-                        <li><strong class="text-indigo-700">会員資格の柔軟化:</strong> 規約に「原則として」の文言を追加し、他学部（まちづくり学部等）、家族、友人も運用上受け入れ可能とする。</li>
-                        <li><strong class="text-indigo-700">参加のハードル低下:</strong> 1,200円程度の会費でイベントや同好会に気軽に参加できるようにする。</li>
-                    </ul>
-                </div>
-
-                <div class="relative border-l-2 border-orange-200 pl-5">
-                    <h3 class="text-lg font-bold mb-3 text-orange-900">1.2. 組織理念の5つの柱（苦しさからの脱却）</h3>
-                    <ul class="custom-list">
-                        <li><strong>楽しさと笑顔:</strong> 義務的で苦しい活動を見直し、笑顔と感動を重視する。</li>
-                        <li><strong>繋がりと絆:</strong> 会員間の分断や孤立を防ぎ、仲間意識を醸成する。</li>
-                        <li><strong>健康と生きがい:</strong> 無理のない範囲で、健康的な活動を推進する。</li>
-                        <li><strong>開放と貢献:</strong> 組織の閉鎖性を排除し、広く地域社会に寄与する。</li>
-                        <li><strong>創造と挑戦:</strong> 前例踏襲から脱却し、新たな取り組みに積極的に挑戦する。</li>
-                    </ul>
-                </div>
-
-                <div class="relative border-l-2 border-indigo-200 pl-5">
-                    <h3 class="text-lg font-bold mb-3 text-indigo-900">1.3. 運営スタイルの変革</h3>
-                    <ul class="custom-list">
-                        <li><strong class="text-indigo-700">参加型運営:</strong> 役員が準備し会員（お客様）をもてなす従来型から、会員自身（特に理事）が企画・運営に参画するスタイルへ移行する。</li>
-                        <li><strong class="text-indigo-700">プロジェクト・実行委員会形式:</strong> 3大行事などの義務的な負担を廃止し、自発的にやりたい人が集まるプロジェクト制を採用する。</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. デジタル化戦略と組織再編 (カード型) -->
-        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 md:p-8 hover:shadow-md transition-shadow duration-300">
-            <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                <span class="flex-shrink-0 w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg font-serif">2</span>
-                <h2 class="text-xl md:text-2xl font-bold font-serif text-ink-dark">
-                    デジタル化（DX）戦略と組織再編
-                </h2>
-            </div>
-
-            <p class="mb-6 leading-relaxed text-ink-light font-medium bg-slate-50 p-4 rounded-lg">
-                組織運営をデジタル面から支援するため、新たな体制構築とツール導入を進める。
-            </p>
-
-            <div class="space-y-8 pl-2 md:pl-4">
-                <div class="relative border-l-2 border-blue-200 pl-5">
-                    <h3 class="text-lg font-bold mb-3 text-blue-900">2.1. デジタル推進組織の独立化</h3>
-                    <ul class="custom-list">
-                        <li><strong>組織再編:</strong> 既存の「ホームページ制作チーム」と「デジタル担当者会議」を統合し、会長直轄の独立した機関として新設する。</li>
-                        <li><strong>人材確保:</strong> 各部署からの選出に加え、ＰＣ研究会などからデジタルスキルを持つ人材を個別にスカウト（一本釣り）する。</li>
-                    </ul>
-                </div>
-
-                <div class="relative border-l-2 border-blue-200 pl-5">
-                    <h3 class="text-lg font-bold mb-3 text-blue-900">2.2. 導入ツールと運用ルール</h3>
-                    <ul class="custom-list">
-                        <li>
-                            <span class="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded mb-1">LINE WORKS</span> の導入:
-                            <ul class="custom-list sub-list mt-2 text-sm text-ink-light">
-                                <li>メリット：既読確認（未読者の把握）が可能、データ保存、PCブラウザ利用可能（インストール不要）。</li>
-                                <li>運用状況：現在15〜16名登録済み。無料枠（30名）を活用し、主要な連絡網として運用。</li>
-                            </ul>
-                        </li>
-                        <li class="mt-4">
-                            <span class="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs font-bold rounded mb-1">Googleドライブ</span> によるクラウド管理: 
-                            <br>200GBの容量を活用。従来のUSBメモリによる属人的な管理から脱却し、組織的なデータ共有・蓄積へ完全移行する（<strong>脱USB宣言</strong>）。
-                        </li>
-                        <li class="mt-4">
-                            <span class="inline-block px-2 py-1 bg-fuchsia-100 text-fuchsia-800 text-xs font-bold rounded mb-1">生成AI</span> と動画の活用:
-                            <br>AIを用いた議事録の自動作成や、会議の5分ダイジェスト動画の制作により、情報共有の効率と理解度を向上させる。
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="relative border-l-2 border-blue-200 pl-5">
-                    <h3 class="text-lg font-bold mb-3 text-blue-900">2.3. 会員のデジタル化支援</h3>
-                    <ul class="custom-list">
-                        <li><strong>スマホ・AI講座:</strong> 公民館での生成AI講座が定員超過となるなど需要が高い。初心者向けスマホ支援やボランティア講師の派遣を検討する。</li>
-                        <li><strong>AIへの向き合い方:</strong> 個人情報保護に留意しつつ、「AIは愛」という前向きな姿勢で活用スキルを磨く。</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3 & 4. グリッドレイアウトで情報を並べる -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            <!-- 3. HPの活性化 -->
-            <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 hover:shadow-md transition-shadow duration-300">
-                <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
-                    <span class="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold font-serif">3</span>
-                    <h2 class="text-lg md:text-xl font-bold font-serif text-ink-dark">
-                        HPの活性化と有料化
-                    </h2>
-                </div>
-                <ul class="custom-list">
-                    <li><strong class="text-indigo-700">HPのハブ化:</strong> 一方向の情報発信にとどまらず、川柳、俳句、八葉会の各同好会の活動をリンクで結び、双方向のコミュニケーションを促すハブサイトへ進化させる。</li>
-                    <li><strong class="text-indigo-700">有料版へのアップグレード:</strong> （実施済）広告表示の削除、データ容量の拡大、サイト動作の安定化を目的とする。</li>
-                </ul>
-            </section>
-
-            <!-- 4. 外部関係 -->
-            <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 hover:shadow-md transition-shadow duration-300">
-                <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
-                    <span class="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold font-serif">4</span>
-                    <h2 class="text-lg md:text-xl font-bold font-serif text-ink-dark">
-                        外部関係の構築
-                    </h2>
-                </div>
-                <ul class="custom-list">
-                    <li><strong class="text-indigo-700">現状の課題:</strong> ルームアドバイザー（RA）の一部に同窓会に対する否定的な意見があり、新規入会の阻害要因となっている。</li>
-                    <li><strong class="text-indigo-700">対策:</strong> 接点を増やし、コミュニケーションの機会（面積）を拡大する。RA推薦制度（3年更新）のプロセスにおいて、事前すり合わせや面談を行う仕組みの導入を検討する。</li>
-                </ul>
-            </section>
         </div>
+    </section>
 
-        <!-- 5 & 6. 財務と今後のアクション -->
-        <section class="bg-white rounded-2xl shadow-sm border border-slate-200/60 p-6 md:p-8 hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
-            <!-- 右下のアクセントカラー -->
-            <div class="absolute bottom-0 right-0 w-32 h-32 bg-orange-50 rounded-tl-full opacity-60 -z-0"></div>
-            
-            <div class="relative z-10">
-                <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
-                    <span class="flex-shrink-0 w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-lg font-serif">5</span>
-                    <h2 class="text-xl md:text-2xl font-bold font-serif text-ink-dark">
-                        財務課題と今後のアクションプラン
-                    </h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
-                    <div>
-                        <h3 class="text-lg font-bold mb-3 text-orange-900 border-l-4 border-orange-400 pl-3">財務と資産管理</h3>
-                        <ul class="custom-list">
-                            <li><strong>余剰金の活用:</strong> 10万円程度の資金余力があるため、有用な備品購入を検討する。</li>
-                            <li><strong>保管場所の問題:</strong> 組織としての固定の住所（事務所）がないため、大型備品（モルック、ボッチャ、eスポーツ機器、プロジェクター等）の保管場所および運搬方法の確保が急務。</li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 class="text-lg font-bold mb-3 text-indigo-900 border-l-4 border-indigo-400 pl-3">今後のアクションと論点</h3>
-                        <ul class="custom-list">
-                            <li><strong>新組織の立ち上げ:</strong> 会長直轄のデジタル独立機関の正式設置と、責任者の任命を行う。</li>
-                            <li><strong>名称の決定:</strong> 新しいデジタル会議の名称として、「デジカフェ」など親しみやすい案を引き続き検討する。</li>
-                            <li><strong>脱USBの推進:</strong> Googleドライブへの移行を徹底する。</li>
-                            <li><strong>名簿の戦略的活用:</strong> 個人会員の所属同好会や参加状況を把握し、孤立を防ぐ「見守りシステム」構築へ。</li>
-                        </ul>
-                    </div>
+    <!-- 講座のバランス（チャート）セクション -->
+    <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-10">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+            どのような体験ができる？（講座のバランス）
+        </h2>
+        <p class="text-center text-gray-600 mb-6">全10回のカリキュラムは、基礎から応用までバランスよく構成されています。</p>
+        
+        <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+            <div class="w-full md:w-1/2">
+                <!-- 必須要件: チャートコンテナ -->
+                <div class="chart-container">
+                    <canvas id="balanceChart"></canvas>
                 </div>
             </div>
-        </section>
+            <div class="w-full md:w-1/2">
+                <ul class="space-y-3 text-lg" id="chart-legend-container">
+                    <!-- JSで凡例を生成 -->
+                </ul>
+            </div>
+        </div>
+    </section>
 
-    </div>
+    <!-- カリキュラム詳細セクション -->
+    <section>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-green-500 pl-3">
+            カリキュラム詳細（全10回）
+        </h2>
+        <p class="mb-6 text-gray-700 leading-relaxed">
+            各回をクリックすると、その日に学ぶ内容や、実際に試すことができる「プロンプト（指示文）」の例が表示されます。プロンプトはボタンを押すだけでコピーでき、すぐにGeminiで試すことができます。
+        </p>
+
+        <div id="curriculum-container" class="space-y-4">
+            <!-- JSでアコーディオンを生成 -->
+        </div>
+    </section>
+
+    <footer class="mt-16 text-center text-gray-500 text-sm pb-8">
+        <p>※本カリキュラムはシニア向けにやさしく構成された案です。実際の状況に合わせて調整してご利用ください。</p>
+    </footer>
+
+</div>
+
+<script>
+    // --- データ定義 ---
+    const categories = {
+        "基礎・入門": { color: "#4A90E2", bgClass: "bg-blue-100", textClass: "text-blue-800", count: 2, icon: "🗣️" },
+        "日常・生活": { color: "#50E3C2", bgClass: "bg-teal-100", textClass: "text-teal-800", count: 3, icon: "🍳" },
+        "趣味・創作": { color: "#F5A623", bgClass: "bg-orange-100", textClass: "text-orange-800", count: 2, icon: "🎨" },
+        "文章作成": { color: "#E91E63", bgClass: "bg-pink-100", textClass: "text-pink-800", count: 1, icon: "✍️" },
+        "安全・まとめ": { color: "#9B59B6", bgClass: "bg-purple-100", textClass: "text-purple-800", count: 2, icon: "🛡️" }
+    };
+
+    const courseData = [
+        {
+            num: 1,
+            title: "生成AIって何？まずはGeminiとおしゃべりしてみよう",
+            category: "基礎・入門",
+            contents: ["生成AI（Gemini）とは何か？（わかりやすい例え話で解説）", "Geminiの画面の見方と基本的な使い方"],
+            exercise: "Geminiに挨拶をして、簡単な日常の疑問を聞いてみよう。",
+            prompts: [
+                "こんにちは！私はこれからAIの使い方を学びます。よろしくお願いします。",
+                "今日の千葉県船橋市の天気を教えて。",
+                "犬と猫、マンションで飼いやすいのはどちらですか？理由も簡単に教えて。"
+            ],
+            goal: "AIと対話する「楽しさ」と「簡単さ」を実感する。"
+        },
+        {
+            num: 2,
+            title: "毎日の献立はおまかせ！レシピや家事のアイデアを聞いてみよう",
+            category: "日常・生活",
+            contents: ["冷蔵庫の余り物からレシピを提案してもらう", "栄養バランスを考えた献立作り、家事の時短アイデア"],
+            exercise: "今日の夕食のメニューや、健康に配慮した献立を考えてもらおう。",
+            prompts: [
+                "冷蔵庫に豚肉と白菜と豆腐があります。フライパン一つで簡単にできる夕食のレシピを教えて。",
+                "シニア向けの、塩分控えめで消化に良い3日分の夕食の献立を考えて。",
+                "シャツの襟の黄ばみを簡単に落とす裏技を教えてください。"
+            ],
+            goal: "日常生活のちょっとした悩みをAIに相談できることを知る。"
+        },
+        {
+            num: 3,
+            title: "趣味をもっと楽しく！旅行の計画や新しい趣味探し",
+            category: "趣味・創作",
+            contents: ["予算や日程に合わせた旅行プランの作成", "自分の興味について深く質問する"],
+            exercise: "自分の行きたい場所の旅行プランを作ってもらおう。",
+            prompts: [
+                "70代の夫婦で、1泊2日で箱根に行きます。あまり歩かずに済む、ゆったりとした温泉旅行のプランを考えて。",
+                "ベランダでプランターを使って、初心者でも育てやすい野菜を3つ教えて。育て方のコツも添えて。",
+                "定年後に新しく始められる、お金があまりかからないインドアの趣味を5つ提案して。"
+            ],
+            goal: "自分の好きなことを広げるためにAIを活用する方法を学ぶ。"
+        },
+        {
+            num: 4,
+            title: "文章作成の頼もしい助手！手紙やメールを書いてもらおう",
+            category: "文章作成",
+            contents: ["友人への手紙や、集まりでの挨拶文の下書きを作成する", "作成された文章を自分らしく手直しするコツ"],
+            exercise: "誰かに宛てた手紙や、短い挨拶文の下書きを作ってもらおう。",
+            prompts: [
+                "長年会っていない学生時代の友人へ、暑中見舞いのハガキの文面を考えて。懐かしい気持ちが伝わるようにして。",
+                "老人クラブの新年会で、乾杯の前の短い挨拶をすることになりました。明るく前向きな内容で、1分程度で話せる文章を書いて。",
+                "上の文章を、もう少し丁寧な言葉遣いに書き換えて。"
+            ],
+            goal: "文章を書く負担を減らし、AIを「下書きの助手」として使う方法を学ぶ。"
+        },
+        {
+            num: 5,
+            title: "言葉から絵が生まれる！画像生成を体験しよう",
+            category: "趣味・創作",
+            contents: ["Geminiの画像生成機能の紹介", "言葉（プロンプト）を工夫して絵を描いてもらう"],
+            exercise: "自分の頭の中にあるイメージを言葉にして、絵を描いてもらおう。",
+            prompts: [
+                "縁側で日向ぼっこをしている三毛猫の絵を描いて。水彩画のような優しいタッチで。",
+                "満開の桜の木の下でお弁当を食べる老夫婦のイラストを作成して。",
+                "富士山と新幹線が一緒に写っている、写真のようなリアルな画像を作って。"
+            ],
+            goal: "AIが文章だけでなく、画像も作り出せる驚きと楽しさを体験する。"
+        },
+        {
+            num: 6,
+            title: "声で操作！スマートフォンでGeminiを使ってみよう",
+            category: "基礎・入門",
+            contents: ["スマートフォン（またはタブレット）でのGeminiの使い方", "キーボード入力が苦手な方向けの「音声入力」の活用"],
+            exercise: "マイク機能を使って、声だけでGeminiに質問してみよう。",
+            prompts: [
+                "（※マイクボタンを押して話しかける）近くにある、美味しいお蕎麦屋さんを教えて。",
+                "（※マイクボタンを押して話しかける）明日の朝、傘は必要？",
+                "（※マイクボタンを押して話しかける）今度の週末に、孫と一緒に遊べる千葉県内の公園を教えて。"
+            ],
+            goal: "パソコンだけでなく、手元のスマホで手軽にAIを使う方法を習得する。"
+        },
+        {
+            num: 7,
+            title: "写真を使って質問してみよう！画像認識の活用",
+            category: "日常・生活",
+            contents: ["Geminiに写真を読み込ませて質問する方法", "外国語の翻訳や、家電の使い方を聞く"],
+            exercise: "自分が撮った写真や、用意された画像をアップロードして質問してみよう。",
+            prompts: [
+                "（※花の写真を添付して）この花の名前は何ですか？どんな環境で育ちますか？",
+                "（※英語で書かれたお菓子のパッケージ写真を添付して）このパッケージには何と書いてありますか？日本語に翻訳して。",
+                "（※リモコンの写真を添付して）赤枠で囲ったボタンは、何に使うボタンですか？"
+            ],
+            goal: "AIの「目」を使って、日常の疑問を解決する方法を学ぶ。"
+        },
+        {
+            num: 8,
+            title: "ここが重要！AIを使う時の「3つの約束」（安全性と注意点）",
+            category: "安全・まとめ",
+            contents: ["AIは時々嘘（ハルシネーション）をつくことを知る", "個人情報入力の危険性と、専門的な判断への注意喚起"],
+            exercise: "あえてAIが間違えやすそうな質問をして、回答を検証してみよう。",
+            prompts: [
+                "『犬も歩けば猫に当たる』ということわざの意味を教えて。",
+                "私の風邪の症状（熱が38度、咳が出る）に合う市販薬の名前を教えて。"
+            ],
+            goal: "AIを安全に、安心して使い続けるための正しいリテラシーを身につける。"
+        },
+        {
+            num: 9,
+            title: "もっと便利に！長い文章の要約と、外国語の翻訳",
+            category: "日常・生活",
+            contents: ["長いニュース記事や難しい説明文の要約", "これまでの復習（困った時の質問の仕方のコツ）"],
+            exercise: "長くて読むのが大変な文章を、わかりやすくまとめてもらおう。",
+            prompts: [
+                "（※長いニュース記事の文章を貼り付けて）このニュースの内容を、小学生でもわかるように3行で要約して。",
+                "市役所から来たこのお知らせの文章の、一番重要なポイントだけを箇条書きで教えて。"
+            ],
+            goal: "情報収集の効率を上げる、少し高度な使い方に挑戦する。"
+        },
+        {
+            num: 10,
+            title: "総復習＆私のGemini活用法・発表会",
+            category: "安全・まとめ",
+            contents: ["全9回の振り返り", "受講生一人ひとりが「私はGeminiをこんな風に使ってみました」を発表"],
+            exercise: "講座で学んだことを活かして、自分が一番聞きたいことを自由に質問してみよう。",
+            prompts: [
+                "私が今まで書いた旅行の思い出をブログにしたいので、魅力的なタイトルを3つ考えて。"
+            ],
+            goal: "達成感を味わい、受講生同士で使い方を共有し合うことで、講座終了後も使い続けるモチベーションを高める。"
+        }
+    ];
+
+    // --- Chart.js の描画 ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctx = document.getElementById('balanceChart').getContext('2d');
+        
+        const labels = Object.keys(categories);
+        const dataValues = labels.map(label => categories[label].count);
+        const backgroundColors = labels.map(label => categories[label].color);
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                maintainAspectRatio: false, // コンテナサイズに従うための必須設定
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false // カスタム凡例を作成するため非表示
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.label}: 全${context.raw}回`;
+                            }
+                        },
+                        bodyFont: { size: 16 },
+                        titleFont: { size: 16 }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+
+        // カスタム凡例の生成
+        const legendContainer = document.getElementById('chart-legend-container');
+        labels.forEach(label => {
+            const cat = categories[label];
+            const li = document.createElement('li');
+            li.className = "flex items-center p-2 rounded-lg bg-white border border-gray-100 shadow-sm";
+            li.innerHTML = `
+                <span class="inline-block w-4 h-4 rounded-full mr-3" style="background-color: ${cat.color};"></span>
+                <span class="font-bold w-24">${label}</span>
+                <span class="text-gray-600 ml-auto">全${cat.count}回</span>
+            `;
+            legendContainer.appendChild(li);
+        });
+
+        // --- アコーディオンUIの生成 ---
+        const curriculumContainer = document.getElementById('curriculum-container');
+        
+        courseData.forEach((course, index) => {
+            const catStyle = categories[course.category];
+            const isFirst = index === 0;
+
+            const itemDiv = document.createElement('div');
+            itemDiv.className = "bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden";
+
+            // アコーディオンヘッダー
+            const headerBtn = document.createElement('button');
+            headerBtn.className = "w-full text-left px-5 py-4 flex justify-between items-center focus:outline-none hover:bg-gray-50 transition-colors";
+            headerBtn.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 font-bold text-gray-700 text-lg border-2 border-white shadow-inner">
+                        第${course.num}回
+                    </div>
+                    <div>
+                        <span class="inline-block px-2 py-1 text-xs font-semibold rounded-md ${catStyle.bgClass} ${catStyle.textClass} mb-1">
+                            ${catStyle.icon} ${course.category}
+                        </span>
+                        <h3 class="text-lg font-bold text-gray-800 leading-tight">${course.title}</h3>
+                    </div>
+                </div>
+                <div class="text-gray-400 text-2xl transition-transform duration-300 transform ${isFirst ? 'rotate-180' : ''}" id="icon-${course.num}">
+                    ▼
+                </div>
+            `;
+
+            // アコーディオンコンテンツ
+            const contentDiv = document.createElement('div');
+            contentDiv.id = `content-${course.num}`;
+            contentDiv.className = `accordion-content bg-gray-50 border-t border-gray-100 ${isFirst ? 'open py-5' : ''}`;
+            
+            // コンテンツのHTML組み立て
+            let contentHTML = `
+                <div class="px-5 sm:px-8 space-y-6">
+                    <div class="bg-white p-4 rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-gray-700 border-b pb-2 mb-3">📚 学ぶ内容</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                            ${course.contents.map(c => `<li>${c}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                        <h4 class="font-bold text-yellow-800 border-b border-yellow-200 pb-2 mb-3">🌟 演習のお題</h4>
+                        <p class="text-gray-800 font-medium">${course.exercise}</p>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-gray-700 mb-3 flex items-center">
+                            <span class="mr-2">💬</span> そのまま使える！プロンプト例
+                        </h4>
+                        <div class="space-y-3">
+            `;
+
+            // プロンプトカードとコピーボタンの生成
+            course.prompts.forEach((prompt, pIndex) => {
+                const promptId = `prompt-${course.num}-${pIndex}`;
+                // マイク入力の注釈があれば分離
+                let displayPrompt = prompt;
+                let note = "";
+                if(prompt.includes("（※")){
+                    const parts = prompt.split("）");
+                    if(parts.length > 1){
+                        note = parts[0] + "）";
+                        displayPrompt = parts[1];
+                    }
+                }
+
+                contentHTML += `
+                    <div class="bg-white border border-gray-200 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:shadow-md transition-shadow">
+                        <div class="flex-1">
+                            ${note ? `<p class="text-xs text-blue-600 mb-1 font-bold">${note}</p>` : ''}
+                            <p class="text-gray-800 font-medium font-sans">「${displayPrompt}」</p>
+                        </div>
+                        <button onclick="copyPrompt('${displayPrompt}', this)" class="copy-btn whitespace-nowrap bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white border border-blue-200 hover:border-blue-600 font-semibold py-2 px-4 rounded-lg flex items-center justify-center text-sm shadow-sm">
+                            <span class="mr-1">📋</span> コピーする
+                        </button>
+                    </div>
+                `;
+            });
+
+            contentHTML += `
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-200 mt-4">
+                        <h4 class="font-bold text-green-800 text-sm mb-1">🏁 この回の目標</h4>
+                        <p class="text-gray-700">${course.goal}</p>
+                    </div>
+                </div>
+            `;
+            
+            contentDiv.innerHTML = contentHTML;
+
+            // アコーディオンの開閉ロジック
+            headerBtn.addEventListener('click', () => {
+                const isOpen = contentDiv.classList.contains('open');
+                
+                // 全て閉じる（単一展開にする場合。今回は複数展開可能にする方が比較しやすいのでコメントアウト）
+                // document.querySelectorAll('.accordion-content').forEach(el => {
+                //     el.classList.remove('open', 'py-5');
+                //     el.previousElementSibling.querySelector('.transform').classList.remove('rotate-180');
+                // });
+
+                const icon = document.getElementById(`icon-${course.num}`);
+
+                if (!isOpen) {
+                    contentDiv.classList.add('open', 'py-5');
+                    icon.classList.add('rotate-180');
+                } else {
+                    contentDiv.classList.remove('open', 'py-5');
+                    icon.classList.remove('rotate-180');
+                }
+            });
+
+            itemDiv.appendChild(headerBtn);
+            itemDiv.appendChild(contentDiv);
+            curriculumContainer.appendChild(itemDiv);
+        });
+    });
+
+    // --- コピー機能 (Fallback mechanism for iFrame compatibility) ---
+    function copyPrompt(text, btnElement) {
+        // iFrame環境（Canvas等）での確実な動作のため、古いexecCommand方式を優先/フォールバックとして使用
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // 画面外に配置
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                const originalHTML = btnElement.innerHTML;
+                btnElement.innerHTML = `<span class="mr-1">✅</span> コピー完了`;
+                btnElement.classList.replace('bg-blue-50', 'bg-green-600');
+                btnElement.classList.replace('text-blue-700', 'text-white');
+                btnElement.classList.remove('hover:bg-blue-600', 'hover:text-white');
+
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHTML;
+                    btnElement.classList.replace('bg-green-600', 'bg-blue-50');
+                    btnElement.classList.replace('text-white', 'text-blue-700');
+                    btnElement.classList.add('hover:bg-blue-600', 'hover:text-white');
+                }, 2000);
+            }
+        } catch (err) {
+            console.error('コピーに失敗しました', err);
+            alert('コピーに失敗しました。手動で選択してコピーしてください。');
+        }
+
+        document.body.removeChild(textArea);
+    }
+</script>
+
 </body>
 </html>
