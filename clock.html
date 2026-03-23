@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kawaii Multi-Clock</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fceaf0 0%, #f9d8e7 100%);
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --accent-color: #ff85a1;
+            --text-color: #5d5d5d;
+            --shadow: 0 8px 32px 0 rgba(255, 133, 161, 0.2);
+        }
+
+        [data-theme="sky"] {
+            --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            --accent-color: #38bdf8;
+            --shadow: 0 8px 32px 0 rgba(56, 189, 248, 0.2);
+        }
+
+        [data-theme="mint"] {
+            --bg-gradient: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            --accent-color: #4ade80;
+            --shadow: 0 8px 32px 0 rgba(74, 222, 128, 0.2);
+        }
+
+        [data-theme="midnight"] {
+            --bg-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --accent-color: #818cf8;
+            --text-color: #f1f5f9;
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 40px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+        }
+
+        /* 挨拶メッセージ */
+        .greeting {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        /* モード切替タブ */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 5px;
+        }
+
+        .tab-btn {
+            padding: 10px 15px;
+            border: none;
+            background: transparent;
+            color: var(--text-color);
+            cursor: pointer;
+            border-radius: 15px;
+            transition: 0.3s;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* 各セクション */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 時計デザイン */
+        .analog-clock {
+            width: 200px;
+            height: 200px;
+            border: 8px solid var(--accent-color);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            background: var(--text-color);
+            transform-origin: bottom;
+            border-radius: 10px;
+            transition: transform 0.05s cubic-bezier(0.1, 2.7, 0.58, 1);
+        }
+
+        .hour-hand { width: 6px; height: 50px; margin-left: -3px; }
+        .min-hand { width: 4px; height: 70px; margin-left: -2px; }
+        .sec-hand { width: 2px; height: 85px; margin-left: -1px; background: var(--accent-color); }
+        .center-dot {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 12px; height: 12px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .digital-time {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .date-display {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        /* ストップウォッチ & タイマー用 */
+        .big-display {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 20px 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary { background: var(--accent-color); color: white; }
+        .btn-secondary { background: rgba(0,0,0,0.1); color: var(--text-color); }
+        .btn:active { transform: scale(0.95); }
+
+        .laps {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .lap-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.9rem;
+        }
+
+        /* タイマー入力 */
+        .timer-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .timer-inputs input {
+            width: 60px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.1);
+            text-align: center;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.5);
+        }
+
+        /* テーマセレクター */
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .theme-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        .dot-sakura { background: #ff85a1; }
+        .dot-sky { background: #38bdf8; }
+        .dot-mint { background: #4ade80; }
+        .dot-midnight { background: #1e293b; }
+
+        /* 通知メッセージ用 */
+        #message-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { top: -50px; opacity: 0; }
+            to { top: 20px; opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="message-box"></div>
+
+    <div class="container">
+        <div id="greeting" class="greeting">こんにちは！</div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchMode('clock')">時計</button>
+            <button class="tab-btn" onclick="switchMode('stopwatch')">計測</button>
+            <button class="tab-btn" onclick="switchMode('timer')">タイマー</button>
+        </div>
+
+        <!-- 時計セクション -->
+        <div id="clock-section" class="content-section active">
+            <div class="analog-clock">
+                <div id="hour-hand" class="hand hour-hand"></div>
+                <div id="min-hand" class="hand min-hand"></div>
+                <div id="sec-hand" class="hand sec-hand"></div>
+                <div class="center-dot"></div>
+            </div>
+            <div id="digital-time" class="digital-time">00:00:00</div>
+            <div id="date-display" class="date-display">2024年 1月 1日 (月)</div>
+        </div>
+
+        <!-- ストップウォッチセクション -->
+        <div id="stopwatch-section" class="content-section">
+            <div id="sw-display" class="big-display">00:00.00</div>
+            <div class="controls">
+                <button id="sw-start-btn" class="btn btn-primary" onclick="toggleStopwatch()">スタート</button>
+                <button id="sw-lap-btn" class="btn btn-secondary" onclick="recordLap()">ラップ</button>
+                <button class="btn btn-secondary" onclick="resetStopwatch()">リセット</button>
+            </div>
+            <div id="sw-laps" class="laps"></div>
+        </div>
+
+        <!-- タイマーセクション -->
+        <div id="timer-section" class="content-section">
+            <div class="timer-inputs">
+                <input type="number" id="t-min" placeholder="分" min="0" max="99" value="0">
+                <span>:</span>
+                <input type="number" id="t-sec" placeholder="秒" min="0" max="59" value="0">
+            </div>
+            <div id="t-display" class="big-display">00:00</div>
+            <div class="controls">
+                <button id="t-start-btn" class="btn btn-primary" onclick="toggleTimer()">スタート</button>
+                <button class="btn btn-secondary" onclick="resetTimer()">リセット</button>
+            </div>
+        </div>
+
+        <!-- テーマ切替 -->
+        <div class="theme-selector">
+            <div class="theme-dot dot-sakura" onclick="setTheme('sakura')"></div>
+            <div class="theme-dot dot-sky" onclick="setTheme('sky')"></div>
+            <div class="theme-dot dot-mint" onclick="setTheme('mint')"></div>
+            <div class="theme-dot dot-midnight" onclick="setTheme('midnight')"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- 共通変数 ---
+        const greetingEl = document.getElementById('greeting');
+        const messageBox = document.getElementById('message-box');
+
+        function showMessage(msg) {
+            messageBox.textContent = msg;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000);
+        }
+
+        // --- 時計機能 ---
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+
+            // デジタル
+            const h = String(hours).padStart(2, '0');
+            const m = String(minutes).padStart(2, '0');
+            const s = String(seconds).padStart(2, '0');
+            document.getElementById('digital-time').textContent = `${h}:${m}:${s}`;
+
+            // 日付
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' };
+            document.getElementById('date-display').textContent = now.toLocaleDateString('ja-JP', options);
+
+            // アナログ針
+            const secDeg = (seconds / 60) * 360;
+            const minDeg = ((minutes + seconds/60) / 60) * 360;
+            const hourDeg = ((hours % 12 + minutes/60) / 12) * 360;
+
+            document.getElementById('sec-hand').style.transform = `translateX(-50%) rotate(${secDeg}deg)`;
+            document.getElementById('min-hand').style.transform = `translateX(-50%) rotate(${minDeg}deg)`;
+            document.getElementById('hour-hand').style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+
+            // 挨拶
+            if (hours >= 5 && hours < 11) greetingEl.textContent = "おはようございます！";
+            else if (hours >= 11 && hours < 18) greetingEl.textContent = "こんにちは！";
+            else greetingEl.textContent = "こんばんは！";
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- モード切替 ---
+        function switchMode(mode) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`${mode}-section`).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // --- ストップウォッチ機能 ---
+        let swInterval;
+        let swTime = 0; // ms
+        let isSwRunning = false;
+
+        function toggleStopwatch() {
+            const btn = document.getElementById('sw-start-btn');
+            if (isSwRunning) {
+                clearInterval(swInterval);
+                btn.textContent = 'スタート';
+            } else {
+                const startTime = Date.now() - swTime;
+                swInterval = setInterval(() => {
+                    swTime = Date.now() - startTime;
+                    displaySw();
+                }, 10);
+                btn.textContent = '一時停止';
+            }
+            isSwRunning = !isSwRunning;
+        }
+
+        function displaySw() {
+            const ms = Math.floor((swTime % 1000) / 10);
+            const s = Math.floor((swTime / 1000) % 60);
+            const m = Math.floor(swTime / 60000);
+            document.getElementById('sw-display').textContent = 
+                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(ms).padStart(2, '0')}`;
+        }
+
+        function recordLap() {
+            if (swTime === 0) return;
+            const lapsContainer = document.getElementById('sw-laps');
+            const lapTime = document.getElementById('sw-display').textContent;
+            const lapItem = document.createElement('div');
+            lapItem.className = 'lap-item';
+            lapItem.innerHTML = `<span>ラップ ${lapsContainer.children.length + 1}</span><span>${lapTime}</span>`;
+            lapsContainer.prepend(lapItem);
+        }
+
+        function resetStopwatch() {
+            clearInterval(swInterval);
+            swTime = 0;
+            isSwRunning = false;
+            displaySw();
+            document.getElementById('sw-start-btn').textContent = 'スタート';
+            document.getElementById('sw-laps').innerHTML = '';
+        }
+
+        // --- タイマー機能 ---
+        let tInterval;
+        let tTime = 0; // seconds
+        let isTRunning = false;
+
+        function toggleTimer() {
+            const btn = document.getElementById('t-start-btn');
+            if (isTRunning) {
+                clearInterval(tInterval);
+                btn.textContent = '再開';
+            } else {
+                if (tTime === 0) {
+                    const m = parseInt(document.getElementById('t-min').value) || 0;
+                    const s = parseInt(document.getElementById('t-sec').value) || 0;
+                    tTime = (m * 60) + s;
+                }
+                
+                if (tTime <= 0) {
+                    showMessage("時間を設定してください");
+                    return;
+                }
+
+                tInterval = setInterval(() => {
+                    tTime--;
+                    displayTimer();
+                    if (tTime <= 0) {
+                        clearInterval(tInterval);
+                        isTRunning = false;
+                        btn.textContent = 'スタート';
+                        showMessage("時間になりました！");
+                    }
+                }, 1000);
+                btn.textContent = '一時停止';
+            }
+            isTRunning = !isTRunning;
+        }
+
+        function displayTimer() {
+            const m = Math.floor(tTime / 60);
+            const s = tTime % 60;
+            document.getElementById('t-display').textContent = 
+                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function resetTimer() {
+            clearInterval(tInterval);
+            tTime = 0;
+            isTRunning = false;
+            document.getElementById('t-display').textContent = '00:00';
+            document.getElementById('t-start-btn').textContent = 'スタート';
+            document.getElementById('t-min').value = 0;
+            document.getElementById('t-sec').value = 0;
+        }
+
+        // --- テーマ設定 ---
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+        }
+
+    </script>
+</body>
+</html>
